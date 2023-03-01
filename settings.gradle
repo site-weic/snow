@@ -1,0 +1,10 @@
+rootProject.name = 'snow'
+include 'snow-lib'
+include 'snow-web'
+include 'snow-lib:snow-base-util'
+findProject(':snow-lib:snow-base-util')?.name = 'snow-base-util'
+include 'snow-lib:snow-web-common'
+findProject(':snow-lib:snow-web-common')?.name = 'snow-web-common'
+include 'snow-web:snow-user'
+findProject(':snow-web:snow-user')?.name = 'snow-user'
+

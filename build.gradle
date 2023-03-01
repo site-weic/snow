@@ -1,0 +1,62 @@
+buildscript {
+    ext {
+        SPRING_BOOT_VERSION = '2.3.12.RELEASE'
+        SPRING_CLOUD_VERSION = 'Hoxton.SR12'
+        ProjectGroup = 'site.weic'
+        ProjectVersion = 'dev-v0.2-SNAPSHOT'
+    }
+
+    repositories {
+        mavenLocal()
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}")
+    }
+}
+
+plugins {
+    id 'maven-publish'
+}
+
+allprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'org.springframework.boot'
+    group ProjectGroup
+    version ProjectVersion
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    tasks.withType(JavaCompile) {
+        options.encoding 'UTF-8'
+    }
+    repositories {
+        mavenLocal()
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        mavenCentral()
+    }
+    bootJar {
+        enabled false
+    }
+}
+
+subprojects {
+    apply plugin: 'io.spring.dependency-management'
+    dependencies {
+        annotationProcessor 'org.projectlombok:lombok'
+        compileOnly 'org.projectlombok:lombok'
+        implementation 'org.slf4j:slf4j-api'
+    }
+    dependencyManagement {
+        dependencies {
+            dependency "org.projectlombok:lombok:1.18.26"
+            dependency "mysql:mysql-connector-java:8.0.23"
+        }
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-starter-parent:${SPRING_BOOT_VERSION}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${SPRING_CLOUD_VERSION}"
+        }
+    }
+
+}
